@@ -1,0 +1,7 @@
+/* Navbar.module.css */
+.wrapp {
+  display: flex;
+  justify-content: space-between;
+  /* background-color: brown; */
+  align-items: center;
+}
