@@ -18,7 +18,7 @@ function Header(props) {
     
         <Navbar 
           f = {props.logiT} 
-          st = {props.isNav} 
+          isLogined = {props.isLogined} 
         />
 
     </div>

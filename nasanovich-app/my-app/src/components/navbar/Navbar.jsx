@@ -9,9 +9,8 @@ import s from './Navbar.module.css'
 export default function Navbar(props) {
 
  
-  if (!props.st) { 
-    return (
-    
+  if (!props.isLogined) { 
+    return ( 
     <nav>
       <NavLink to='/signin' >
         <Button1  onClick={props.f} name='Вход'/> 
@@ -21,13 +20,14 @@ export default function Navbar(props) {
       <Button1 onClick={props.f} name='Регистрация'/>  
       </NavLink>
     </nav>
-    )} else return (
+    )}
+    
+    else return (
       <div className={s.wrapp} >
 
         <div>учетная запись</div>
 
-        <nav>
-        
+        <nav>   
           <NavLink to='/favorites' >
             <Button1 name='Избранное'/> 
           </NavLink>
@@ -42,4 +42,3 @@ export default function Navbar(props) {
       </div>
     )
 }
-
