@@ -19,9 +19,9 @@ import ModalWinContent from './components/modalwindow/ModalWinContent';
 
 function App() {
 
-  const [statNav, setNavStat] = useState(false)
-  function logiTrue() { setNavStat(true) }
-  function logiFalse() { setNavStat(false) }
+  const [isLogined, setIsLogined] = useState(false) // was user logined?
+  function setLoginTrue() { setIsLogined(true) }
+  function setLoginFalse() { setIsLogined(false) }
   // const [isMember, setIsMember] = useState(false)
 
   const [films, setFilms] = useState([
@@ -73,15 +73,13 @@ function App() {
     }
   }
   function searchMovieFunc(text) { setFindString(text) }
-  const changePagePlus = () => setPage(page + 1)
-  const changePageMinus = () => setPage(page - 1)
+  const changePagePlus = () => setPage(page + 1);
+  const changePageMinus = () => setPage(page - 1);
 
-  function modalWinFunc(e) {
-    let id = e.currentTarget.dataset.id
-    console.log('id=', id)
-    console.log('film:', films[id])
-    setCurrentFilmID(id)
-    setModal(true)
+  function modalWinGivesInfo(e) {
+    const id = e.currentTarget.dataset.id;
+    setCurrentFilmID(id);
+    setModal(true);
   }
 
 
@@ -90,9 +88,9 @@ function App() {
     <div className="App">
 
       <Header
-        logiT={logiTrue}
-        logiF={logiFalse}
-        isNav={statNav} // нажата "вход" или "регистрация"
+        logiT={setLoginTrue}
+        logiF={setLoginFalse}
+        isLogined={isLogined} // нажата "вход" или "регистрация"
       />
 
 
@@ -122,7 +120,7 @@ function App() {
           currentPage={page}
           increment={changePagePlus}
           decrement={changePageMinus}
-          modalWin={modalWinFunc}
+          modalWin={modalWinGivesInfo}
         />
       </div>
 

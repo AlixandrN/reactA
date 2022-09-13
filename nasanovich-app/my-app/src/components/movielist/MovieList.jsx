@@ -13,12 +13,6 @@ const MovieList = (props) => {
   if (props.currentPage === Math.ceil(props.totalItems / 10) ||
     props.totalItems === 0) { statusNextBtn = true };
 
-  // function modalWinFunc (e) {
-  //   let id = e.currentTarget.dataset.id
-  //   console.log('id=', id)
-  //   console.log('film:', props.items[id])
-  // }
-
   return (
     <div className={s.wrappList}>
 
@@ -34,9 +28,9 @@ const MovieList = (props) => {
         {props.items.map((el, index) =>
           <MovieCard
             item={el}
-            number={index + 1}
+            elNumber={index + 1}
             key={index}
-            f={props.modalWin}
+            modalWinSet={props.modalWin}
           />
         )}
       </div>
