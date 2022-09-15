@@ -7,7 +7,9 @@ function Header(props) {
   return (
     <div className={s.header} >
 
-        <div className={s.logo} onClick={props.logiF} >        
+        <div className={s.logo} 
+          onClick={props.logiF} 
+        >        
             <NavLink to='/' >
                 <div  className={s.imgwrapp} >
                     <div className={s.text} >Movie</div>
@@ -17,7 +19,11 @@ function Header(props) {
         </div>    
     
         <Navbar 
-          f = {props.logiT} 
+          member = {props.member}
+          isMember = {props.isMember}
+          changeIsMember = {props.changeIsMember}
+          tryLogPage = {props.logiT} 
+          resetLogPage = {props.logiF}
           isLogined = {props.isLogined} 
         />
 
