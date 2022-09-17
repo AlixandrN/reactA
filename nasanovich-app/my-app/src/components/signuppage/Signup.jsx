@@ -2,7 +2,7 @@ import React from 'react'
 import s from './Signup.module.css'
 import Button1 from '../UI/buttons/Button1'
 import InputLog from '../UI/input/InputLog'
-import InputPas from '../UI/input/InputPas'
+import InputPassword from '../UI/input/InputPassword'
 
 function Signup(props) {
   return (
@@ -14,7 +14,7 @@ function Signup(props) {
       <form>
 
         <InputLog ref={props.refLogin} />
-        <InputPas ref={props.refPassword} />
+        <InputPassword ref={props.refPassword} />
 
         <div>
 

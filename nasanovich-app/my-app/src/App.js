@@ -130,7 +130,7 @@ function App() {
   }
 
   //Signin function---------------------------------
-  function attemptToLogin(e) {
+  function goToLogin(e) {
     e.preventDefault();
     const currentLogin = loginInputRef.current.value;
     const currentPassword = passwordInputRef.current.value;
@@ -152,7 +152,6 @@ function App() {
     }
   }
 
-
   return (
     <div className="App">
 
@@ -165,13 +164,12 @@ function App() {
         isLogined={isLogined} // нажата "вход" или "регистрация"
       />
 
-
       <Routes>
 
         <Route path='signin' element={<Signin
           refLogin={loginInputRef}
           refPassword={passwordInputRef}
-          callBack={attemptToLogin}
+          callBack={goToLogin}
         />} />
 
         <Route path='signup' element={<Signup
@@ -196,7 +194,6 @@ function App() {
             />
           </div>
         } />
-
 
       </Routes>
 

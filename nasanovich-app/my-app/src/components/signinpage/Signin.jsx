@@ -1,7 +1,7 @@
 import React from 'react'
 import Button1 from '../UI/buttons/Button1'
 import InputLog from '../UI/input/InputLog'
-import InputPas from '../UI/input/InputPas'
+import InputPassword from '../UI/input/InputPassword'
 import s from './Signin.module.css'
 
 function Signin(props) {
@@ -16,7 +16,7 @@ function Signin(props) {
         <form>
           
           <InputLog ref={props.refLogin} />
-          <InputPas ref={props.refPassword} />
+          <InputPassword ref={props.refPassword} />
           <div>
 
           <Button1 onClick={props.callBack}>войти</Button1>
