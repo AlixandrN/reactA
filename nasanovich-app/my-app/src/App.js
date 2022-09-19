@@ -13,7 +13,6 @@ import MovieList from './components/movielist/MovieList';
 import ModalWin from './components/modalwindow/ModalWin';
 import ModalWinContent from './components/modalwindow/ModalWinContent';
 
-
 function App() {
 
   const [isLogined, setIsLogined] = useState(false) // was user logined?
@@ -31,23 +30,23 @@ function App() {
   const [films, setFilms] = useState([
     {
       Poster: "https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
-      Title: "Harry Potter and the Deathly Hallows: Part 2",
+      Title: "C 2011 Harry Potter and the Deathly Hallows: Part 2",
       Type: "movie",
       Year: "2011",
       imdbID: "tt1201607"
     },
     {
       Poster: "https://m.media-amazon.com/images/M/MV5BMzkyZGFlOWQtZjFlMi00N2YwLWE2OWQtYTgxY2NkNmM1NjMwXkEyXkFqcGdeQXVyNjY1NTM1MzA@._V1_SX300.jpg",
-      Title: "Harry Potter and the Sorcerer's Stone",
+      Title: "B 2001 Harry Potter and the Sorcerer's Stone",
       Type: "movie",
       Year: "2001",
       imdbID: "tt0241527"
     },
     {
       Poster: "https://m.media-amazon.com/images/M/MV5BMzkyZGFlOWQtZjFlMi00N2YwLWE2OWQtYTgxY2NkNmM1NjMwXkEyXkFqcGdeQXVyNjY1NTM1MzA@._V1_SX300.jpg",
-      Title: "Harry Potter and the Sorcerer's Stone",
+      Title: "A 2021 Harry Potter and the Sorcerer's Stone",
       Type: "movie",
-      Year: "2001",
+      Year: "2021",
       imdbID: "tt0241527"
     },
   ])
@@ -78,7 +77,6 @@ function App() {
   async function fetchPosts() {
     const way = `https://www.omdbapi.com/?s=${findString}&apikey=${key1}&page=${page}`
     const response = await axios.get(way)
-    // console.log(response.data)
     if (response.data.Response === 'True') {
       setFilms(response.data.Search);
       setTotalFilms(response.data.totalResults)
@@ -86,7 +84,6 @@ function App() {
     else {
       setFilms([]);
       setTotalFilms(0);
-      // console.log('er=', response.data.Error)
     }
   }
 
@@ -106,7 +103,6 @@ function App() {
     const currentPassword = passwordInputRef.current.value;
 
     if (localStorage.getItem('users') === null) {
-      console.log('users are empty')
       let usersArr = [];
       usersArr.push({ login: currentLogin, password: currentPassword });
       localStorage.setItem('users', JSON.stringify(usersArr));
@@ -134,17 +130,12 @@ function App() {
     e.preventDefault();
     const currentLogin = loginInputRef.current.value;
     const currentPassword = passwordInputRef.current.value;
-    // console.log('currentLogin:', currentLogin)
-
     let arr = JSON.parse(localStorage.getItem('users'));
     let isMatch = arr.some(el => el['login'] === currentLogin);
     if (!isMatch) { alert('такого логина нет!') }
     else {
       let person = arr.find(el => el['login'] === currentLogin)
-      console.log('person=', person.password)
       if (person.password === currentPassword) {
-        console.log('BINGO')
-        // set member
         setMember(currentLogin);
         setIsMember(true);
         localStorage.setItem('member', JSON.stringify(currentLogin));
@@ -186,6 +177,7 @@ function App() {
             <InputSearch1 search={changeSearchMovie} />
             <MovieList
               items={films}
+              // setItems={setFilms}
               totalItems={totalFilms}
               currentPage={page}
               increment={changePagePlus}
@@ -200,7 +192,11 @@ function App() {
       <ModalWin visible={modal} setVisible={setModal} >
         {totalFilms > 0 &&
           films[currentFilmID] &&
-          <ModalWinContent film={films[currentFilmID]} />
+          <ModalWinContent 
+            film={films[currentFilmID]}
+            member={member}
+            visible={modal}
+          />
         }
       </ModalWin>
 
