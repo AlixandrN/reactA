@@ -8,7 +8,6 @@ import s from "./MovieList.module.css";
 
 const MovieList = (props) => {
   const [selectedSort, setSelectedSort] = useState("");
-  const sortMovies = (sort) => setSelectedSort(sort);
   const sortedMovies = useMovies(props.items, selectedSort);
 
   //pagination buttons
@@ -29,7 +28,7 @@ const MovieList = (props) => {
       <div>
         <Select1
           value={selectedSort}
-          onChange={(e) => sortMovies(e)}
+          onChange={(e) => setSelectedSort(e)}
           options={[
             { value: "Year", name: "по году" },
             { value: "Title", name: "по имени" },

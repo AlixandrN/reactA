@@ -10,8 +10,8 @@ function ModalWinContent(props) {
   useEffect(() => {
     if (props.member) {
       let arr = JSON.parse(localStorage.getItem(props.member));
-      let isCoincidence = arr.some((el) => el.imdbID === props.film.imdbID);
-      setActiveLikeBtn(isCoincidence);
+      let isMatch = arr.some((el) => el.imdbID === props.film.imdbID);
+      setActiveLikeBtn(isMatch);
     }
   }, [props.visible]);
 

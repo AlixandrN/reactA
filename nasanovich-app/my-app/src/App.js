@@ -177,7 +177,6 @@ function App() {
             <InputSearch1 search={changeSearchMovie} />
             <MovieList
               items={films}
-              // setItems={setFilms}
               totalItems={totalFilms}
               currentPage={page}
               increment={changePagePlus}
