@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import axios from 'axios';
@@ -7,53 +7,58 @@ import Signin from './components/signinpage/Signin';
 import Signup from './components/signuppage/Signup';
 import Header from './components/header/Header';
 import Favorites from './components/favoritespage/Favorites';
-import History from './components/historypage/History';
+// import History from './components/historypage/History'; 
 import InputSearch1 from './components/UI/input/InputSearch1';
 import MovieList from './components/movielist/MovieList';
 import ModalWin from './components/modalwindow/ModalWin';
 import ModalWinContent from './components/modalwindow/ModalWinContent';
+import { useContext } from 'react';
+import ThemeContext from './context';
 
 function App() {
-
+  const History = lazy(() => import('./components/historypage/History'));
   const [isLogined, setIsLogined] = useState(false) // was user logined?
   function setLoginTrue() { setIsLogined(true) }
   function setLoginFalse() { setIsLogined(false) }
 
   const [member, setMember] = useState('');
   const [isMember, setIsMember] = useState(false);
+  
   const resetMember = () => {
-    localStorage.setItem('member', null);
+    console.log('reset member')
     setMember('');
     setIsMember(false);
+    localStorage.setItem('member', null);
   };
 
   const [films, setFilms] = useState([
-    {
-      Poster: "https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
-      Title: "C 2011 Harry Potter and the Deathly Hallows: Part 2",
-      Type: "movie",
-      Year: "2011",
-      imdbID: "tt1201607"
-    },
-    {
-      Poster: "https://m.media-amazon.com/images/M/MV5BMzkyZGFlOWQtZjFlMi00N2YwLWE2OWQtYTgxY2NkNmM1NjMwXkEyXkFqcGdeQXVyNjY1NTM1MzA@._V1_SX300.jpg",
-      Title: "B 2001 Harry Potter and the Sorcerer's Stone",
-      Type: "movie",
-      Year: "2001",
-      imdbID: "tt0241527"
-    },
-    {
-      Poster: "https://m.media-amazon.com/images/M/MV5BMzkyZGFlOWQtZjFlMi00N2YwLWE2OWQtYTgxY2NkNmM1NjMwXkEyXkFqcGdeQXVyNjY1NTM1MzA@._V1_SX300.jpg",
-      Title: "A 2021 Harry Potter and the Sorcerer's Stone",
-      Type: "movie",
-      Year: "2021",
-      imdbID: "tt0241527"
-    },
+    // {
+    //   Poster: "https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
+    //   Title: "C 2011 Harry Potter and the Deathly Hallows: Part 2",
+    //   Type: "movie",
+    //   Year: "2011",
+    //   imdbID: "tt1201607"
+    // },
+    // {
+    //   Poster: "https://m.media-amazon.com/images/M/MV5BMzkyZGFlOWQtZjFlMi00N2YwLWE2OWQtYTgxY2NkNmM1NjMwXkEyXkFqcGdeQXVyNjY1NTM1MzA@._V1_SX300.jpg",
+    //   Title: "B 2001 Harry Potter and the Sorcerer's Stone",
+    //   Type: "movie",
+    //   Year: "2001",
+    //   imdbID: "tt0241527"
+    // },
+    // {
+    //   Poster: "https://m.media-amazon.com/images/M/MV5BMzkyZGFlOWQtZjFlMi00N2YwLWE2OWQtYTgxY2NkNmM1NjMwXkEyXkFqcGdeQXVyNjY1NTM1MzA@._V1_SX300.jpg",
+    //   Title: "A 2021 Harry Potter and the Sorcerer's Stone",
+    //   Type: "movie",
+    //   Year: "2021",
+    //   imdbID: "tt0241527"
+    // },
   ])
   const [totalFilms, setTotalFilms] = useState(0);
   const [page, setPage] = useState(1);
-  const [findString, setFindString] = useState('0');
-  useEffect(() => { fetchPosts(); setPage(1) }, [findString]);
+  const [query, setQuery] = useState('0');
+  
+  useEffect(() => { fetchPosts(); setPage(1) }, [query]);
   useEffect(() => { fetchPosts() }, [page]);
 
   useEffect(() => {
@@ -66,16 +71,14 @@ function App() {
     }
   }, []);
 
-  //Modal Window
-  const [modal, setModal] = useState(false);
-  const [currentFilmID, setCurrentFilmID] = useState(null)
+  const [currentFilmID, setCurrentFilmID] = useState(null);
   // Ref
   const loginInputRef = useRef();
   const passwordInputRef = useRef();
   //API
   const key1 = '71ce4062';//пока без использования средств скрытия
   async function fetchPosts() {
-    const way = `https://www.omdbapi.com/?s=${findString}&apikey=${key1}&page=${page}`
+    const way = `https://www.omdbapi.com/?s=${query}&apikey=${key1}&page=${page}`
     const response = await axios.get(way)
     if (response.data.Response === 'True') {
       setFilms(response.data.Search);
@@ -87,14 +90,10 @@ function App() {
     }
   }
 
-  const changeSearchMovie = text => setFindString(text);
   const changePagePlus = () => setPage(page + 1);
   const changePageMinus = () => setPage(page - 1);
-  function modalWinGivesInfo(e) {
-    const id = e.currentTarget.dataset.id;
-    setCurrentFilmID(id);
-    setModal(true);
-  }
+ 
+  const modalWinGivesInfo = e =>setCurrentFilmID(e.currentTarget.dataset.id);
 
   //Signup function---------------------------------
   function addNewMember(e) {
@@ -114,6 +113,9 @@ function App() {
       let arr = JSON.parse(localStorage.getItem('users'));
       let isMatch = arr.some(el => el['login'] === currentLogin);
       if (isMatch) { alert('такой логин уже существует') }
+      else if(currentLogin === 'member' || currentLogin === 'history' || currentLogin === 'users' ) {
+        alert('такой логин зарезервирован')
+      }
       else { // login is OK (not match)
         arr.push({ login: currentLogin, password: currentPassword })
         localStorage.setItem('users', JSON.stringify(arr));
@@ -154,7 +156,8 @@ function App() {
         logiF={setLoginFalse} // отмена попытки входа
         isLogined={isLogined} // нажата "вход" или "регистрация"
       />
-
+      
+      <Suspense fallback={<div>Loading...</div>} >
       <Routes>
 
         <Route path='signin' element={<Signin
@@ -170,34 +173,26 @@ function App() {
         />} />
 
         <Route path='favorites' element={<Favorites />} />
-        <Route path='history' element={<History />} />
+        <Route path='history' element={ <History /> }/>
 
-        <Route path='/' element={
-          <div className='main'>
-            <InputSearch1 search={changeSearchMovie} />
-            <MovieList
+        </Routes>
+        </Suspense>
+        <Routes>
+
+        <Route path='/' element={<MovieList
+              query={setQuery}
               items={films}
               totalItems={totalFilms}
               currentPage={page}
               increment={changePagePlus}
               decrement={changePageMinus}
               modalWin={modalWinGivesInfo}
-            />
-          </div>
-        } />
+            /> } />
 
       </Routes>
+      {/* </Suspense> */}
 
-      <ModalWin visible={modal} setVisible={setModal} >
-        {totalFilms > 0 &&
-          films[currentFilmID] &&
-          <ModalWinContent 
-            film={films[currentFilmID]}
-            member={member}
-            visible={modal}
-          />
-        }
-      </ModalWin>
+      <ModalWin currentFilm={films[currentFilmID]} currentMember = {member} />
 
     </div>
   );

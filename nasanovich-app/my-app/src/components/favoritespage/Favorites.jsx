@@ -14,6 +14,7 @@ function Favorites() {
   const [memberMovies, setMemberMovies] = useState(arr);
   useEffect(() => {
     setMemberMovies(arr);
+    console.log('currentMember', currentMember)
   }, []);
 
   const deleteCard = (e) => {

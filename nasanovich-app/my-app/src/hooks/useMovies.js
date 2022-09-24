@@ -1,4 +1,4 @@
-// custom gook useMovies
+// custom hook useMovies
 import { useMemo } from "react";
 
 export const useMovies = (movies, selectedSort) => {

@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useMovies } from "../../hooks/useMovies";
 import ButtonNext from "../UI/buttons/ButtonNext";
+import InputSearch1 from "../UI/input/InputSearch1";
 import Select1 from "../UI/select/Select1";
 import MovieCard from "./MovieCard";
 import s from "./MovieList.module.css";
@@ -25,6 +26,10 @@ const MovieList = (props) => {
 
   return (
     <div className={s.wrappList}>
+      <div className={s.queryString}>
+      <InputSearch1  query={props.query} />
+      </div >
+      
       <div>
         <Select1
           value={selectedSort}
