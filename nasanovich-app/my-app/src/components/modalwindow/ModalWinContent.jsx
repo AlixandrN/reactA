@@ -1,14 +1,13 @@
 import React from "react";
 import s from "./ModalWinContent.module.css";
-import { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { likeItem } from "../../redux/actions";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import ThemeContext from "../../context";
+import addLikeKey from "../ls/addLikeKey";
 
 function ModalWinContent(props) {
   const [activeLikeBtn, setActiveLikeBtn] = useState(true);
-  const { modalVisible, setModalVisible } = useContext(ThemeContext);
+  const { modalVisible } = useContext(ThemeContext);
 
   useEffect(() => {
     if (props.member) {
@@ -25,11 +24,10 @@ function ModalWinContent(props) {
     }
   }, [modalVisible]);
 
-  const dispatch = useDispatch();
-
   const handleChange = () => {
-    dispatch(likeItem(props.member, props.film));
+    addLikeKey(props.member, props.film);
   };
+
   if (props.film) {
     return (
       <div className={s.mwcontent}>
@@ -54,7 +52,7 @@ function ModalWinContent(props) {
         <br />
         type: {props.film["Type"]}
         <br />
-        <img src={props.film["Poster"]} />
+        <img src={props.film["Poster"]} alt='poster'/>
       </div>
     );
   }

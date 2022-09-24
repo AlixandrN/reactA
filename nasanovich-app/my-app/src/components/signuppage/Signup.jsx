@@ -6,11 +6,15 @@ import InputLog from "../UI/input/InputLog";
 import InputPassword from "../UI/input/InputPassword";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "../ErrorFallback";
+import { useDispatch } from "react-redux";
+import { setFirst } from "../features/user/userSlice";
+import { setMember } from "../features/memberSlice";
 
 function Signup(props) {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [log, setLog] = useState("");
   const [password, setPassword] = useState("");
@@ -26,8 +30,7 @@ function Signup(props) {
   function PasswordMessage() {
     if (password.length > 10) {
       throw new Error("more then ten");
-    } 
-    else if (password.length > 0) {
+    } else if (password.length > 0) {
       return <p className={s.message}> "password подходит" </p>;
     }
   }
@@ -42,6 +45,12 @@ function Signup(props) {
     } else {
       props.callBack(e);
       navigate("/");
+      dispatch(
+        setMember({
+          name: props.refLogin.current.value,
+          password: props.refPassword.current.value,
+        })
+      );
     }
   };
 
@@ -55,7 +64,10 @@ function Signup(props) {
         <InputLog
           value={log}
           ref={props.refLogin}
-          onChange={(e) => setLog(e.target.value)}
+          onChange={(e) => {
+            setLog(e.target.value);
+            dispatch(setFirst(e.target.value));
+          }}
         />
         <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[log]}>
           <LoginMessage />
@@ -73,6 +85,7 @@ function Signup(props) {
           <Button1
             onClick={(e) => {
               checkInputs(e);
+              dispatch(setFirst(""));
             }}
             name="создать пользователя"
           />

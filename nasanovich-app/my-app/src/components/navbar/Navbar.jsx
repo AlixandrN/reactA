@@ -2,6 +2,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Button1 from "../UI/buttons/Button1";
+import LoginNameInfo from "./LoginNameInfo";
 import s from "./Navbar.module.css";
 
 export default function Navbar(props) {
@@ -55,7 +56,7 @@ export default function Navbar(props) {
         <div className={s.wrapp}>
           <div className={s.text}>
             {/* учетная запись */}
-            {!props.member && "вход не выполнен"}
+            {!props.member && <LoginNameInfo />}
             {props.member && `вход выполнил пользователь: ${props.member}`}
           </div>
 

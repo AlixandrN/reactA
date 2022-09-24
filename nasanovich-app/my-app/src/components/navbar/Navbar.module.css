@@ -2,11 +2,14 @@
 .wrapp {
   display: flex;
   justify-content: space-between;
-  /* background-color: brown; */
   align-items: center;
 }
 
 .text {
   color: black;
   font-weight: bold;
+}
+
+.login {
+  color: red
 }

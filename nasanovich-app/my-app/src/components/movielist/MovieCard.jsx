@@ -4,7 +4,7 @@ import { useContext } from "react";
 import ThemeContext from "../../context";
 
 const MovieCard = (props) => {
-  const { modalVisible, setModalVisible } = useContext(ThemeContext);
+  const { setModalVisible } = useContext(ThemeContext);
   return (
     <div
       className={s.item}
@@ -16,7 +16,7 @@ const MovieCard = (props) => {
     >
       <div>Movie № {props.elNumber}</div>
       <div> {props.item.Title}</div>
-      <img src={props.item.Poster} />
+      <img src={props.item.Poster} alt='img'/>
       <button
         className={s.button}
         onClick={(e) => {
