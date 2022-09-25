@@ -1,0 +1,11 @@
+.page {
+  background-color: rgb(102, 71, 59);
+  width: 100%;
+  height: calc(100vh - 80px);
+  color: white;
+  padding-top: 10%;
+}
+
+.message {
+  color: green;
+}

@@ -1,0 +1,15 @@
+/* Navbar.module.css */
+.wrapp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  color: black;
+  font-weight: bold;
+}
+
+.login {
+  color: red
+}

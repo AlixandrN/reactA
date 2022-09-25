@@ -1,0 +1,37 @@
+.page {
+  background-color: rgb(98, 102, 36);
+  width: 100%;
+  height: calc(100vh - 80px);
+  color: white;
+  margin: 0;
+  padding-top: 30px;
+}
+
+.text {
+  margin: 0;
+  padding-top: 200px;
+  font-size: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.item_wrapp {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: start;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+}
+
+.item {
+  border-radius: 10px;
+  height: 25px;
+  background-color: rgba(35, 73, 46, 0.39);
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid teal;
+}
