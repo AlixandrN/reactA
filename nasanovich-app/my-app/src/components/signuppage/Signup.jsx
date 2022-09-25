@@ -12,12 +12,41 @@ import { useDispatch } from "react-redux";
 import { setFirst } from "../features/user/userSlice";
 import { setMember } from "../features/memberSlice";
 
-function Signup(props) {
+function Signup({ setMemberL, setIsMemberL }) {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const [log, setLog] = useState("");
   const [password, setPassword] = useState("");
+
+  //Signup function---------------------------------
+  function addNewMember() {
+    if (localStorage.getItem("users") === null) {
+      let usersArr = [];
+      usersArr.push({ login: log, password: password });
+      localStorage.setItem("users", JSON.stringify(usersArr));
+      // set member
+      setMemberL(log);
+      setIsMemberL(true);
+      localStorage.setItem("member", JSON.stringify(log));
+    } else {
+      //LS is not empty
+      let arr = JSON.parse(localStorage.getItem("users"));
+      let isMatch = arr.some((el) => el["login"] === log);
+      if (isMatch) {
+        alert("такой логин уже существует");
+      } else if (log === "member" || log === "history" || log === "users") {
+      } else {
+        // login is OK (not match)
+        arr.push({ login: log, password: password });
+        localStorage.setItem("users", JSON.stringify(arr));
+        // set member
+        setMemberL(log);
+        setIsMemberL(true);
+        localStorage.setItem("member", JSON.stringify(log));
+      }
+    }
+  }
 
   function LoginMessage() {
     if (log.length > 10) {
@@ -37,18 +66,15 @@ function Signup(props) {
 
   const checkInputs = (e) => {
     e.preventDefault();
-    if (
-      props.refLogin.current.value === "" ||
-      props.refPassword.current.value === ""
-    ) {
+    if (log === "" || password === "") {
       alert("все поля должны быть заполнены");
     } else {
-      props.callBack(e);
+      addNewMember();
       navigate("/");
       dispatch(
         setMember({
-          name: props.refLogin.current.value,
-          password: props.refPassword.current.value,
+          name: log,
+          password: password,
         })
       );
     }
@@ -63,7 +89,6 @@ function Signup(props) {
       <form>
         <InputLog
           value={log}
-          ref={props.refLogin}
           onChange={(e) => {
             setLog(e.target.value);
             dispatch(setFirst(e.target.value));
@@ -75,7 +100,6 @@ function Signup(props) {
 
         <InputPassword
           value={password}
-          ref={props.refPassword}
           onChange={(e) => setPassword(e.target.value)}
         />
         <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[password]}>

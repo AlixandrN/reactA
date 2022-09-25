@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
@@ -31,14 +31,14 @@ function App() {
   };
 
   const [films, setFilms] = useState([
-    {
-      Poster:
-        "https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
-      Title: "C 2011 Harry Potter and the Deathly Hallows: Part 2",
-      Type: "movie",
-      Year: "2011",
-      imdbID: "tt1201607",
-    },
+    // {
+    //   Poster:
+    //     "https://m.media-amazon.com/images/M/MV5BMGVmMWNiMDktYjQ0Mi00MWIxLTk0N2UtN2ZlYTdkN2IzNDNlXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
+    //   Title: "C 2011 Harry Potter and the Deathly Hallows: Part 2",
+    //   Type: "movie",
+    //   Year: "2011",
+    //   imdbID: "tt1201607",
+    // },
   ]);
   const [totalFilms, setTotalFilms] = useState(0);
   const [page, setPage] = useState(1);
@@ -62,9 +62,7 @@ function App() {
   }, []);
 
   const [currentFilmID, setCurrentFilmID] = useState(null);
-  // Ref
-  const loginInputRef = useRef();
-  const passwordInputRef = useRef();
+
   //API
   const key1 = "71ce4062";
   async function fetchPosts() {
@@ -84,64 +82,6 @@ function App() {
 
   const modalWinGivesInfo = (e) => setCurrentFilmID(e.currentTarget.dataset.id);
 
-  //Signup function---------------------------------
-  function addNewMember(e) {
-    e.preventDefault();
-    const currentLogin = loginInputRef.current.value;
-    const currentPassword = passwordInputRef.current.value;
-
-    if (localStorage.getItem("users") === null) {
-      let usersArr = [];
-      usersArr.push({ login: currentLogin, password: currentPassword });
-      localStorage.setItem("users", JSON.stringify(usersArr));
-      // set member
-      setMember(currentLogin);
-      setIsMember(true);
-      localStorage.setItem("member", JSON.stringify(currentLogin));
-    } else {
-      //LS is not empty
-      let arr = JSON.parse(localStorage.getItem("users"));
-      let isMatch = arr.some((el) => el["login"] === currentLogin);
-      if (isMatch) {
-        alert("такой логин уже существует");
-      } else if (
-        currentLogin === "member" ||
-        currentLogin === "history" ||
-        currentLogin === "users"
-      ) {
-      } else {
-        // login is OK (not match)
-        arr.push({ login: currentLogin, password: currentPassword });
-        localStorage.setItem("users", JSON.stringify(arr));
-        // set member
-        setMember(currentLogin);
-        setIsMember(true);
-        localStorage.setItem("member", JSON.stringify(currentLogin));
-      }
-    }
-  }
-
-  //Signin function---------------------------------
-  function goToLogin(e) {
-    e.preventDefault();
-    const currentLogin = loginInputRef.current.value;
-    const currentPassword = passwordInputRef.current.value;
-    let arr = JSON.parse(localStorage.getItem("users"));
-    let isMatch = arr.some((el) => el["login"] === currentLogin);
-    if (!isMatch) {
-      alert("такого логина нет!");
-    } else {
-      let person = arr.find((el) => el["login"] === currentLogin);
-      if (person.password === currentPassword) {
-        setMember(currentLogin);
-        setIsMember(true);
-        localStorage.setItem("member", JSON.stringify(currentLogin));
-      } else {
-        alert("неверный пароль");
-      }
-    }
-  }
-
   return (
     <div className="App">
       <Header
@@ -158,22 +98,14 @@ function App() {
           <Route
             path="signin"
             element={
-              <Signin
-                refLogin={loginInputRef}
-                refPassword={passwordInputRef}
-                callBack={goToLogin}
-              />
+              <Signin setMemberL={setMember} setIsMemberL={setIsMember} />
             }
           />
 
           <Route
             path="signup"
             element={
-              <Signup
-                refLogin={loginInputRef}
-                refPassword={passwordInputRef}
-                callBack={addNewMember}
-              />
+              <Signup setMemberL={setMember} setIsMemberL={setIsMember} />
             }
           />
 
